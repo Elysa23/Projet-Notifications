@@ -1,8 +1,25 @@
 import Image from "next/image";
 
 export default function Home() {
+  const nom = "Nounouurs"
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    <div>
+      <h2> Coucouu {nom} 👋!</h2>
+      <p>Voici le rappel comme convenu ! 😉😝😄</p>
+      <p> Fais-moi signe de sa bonne réception, via ces boutons 👇😉</p>
+    </div>
+
+    <div>
+      <button type="button">Ok je l'ai</button>
+      <button type="button"> Personnaliser</button>
+    </div>
+  )
+    
+}
+
+/*CODE NEXT JS DEFAULT*/
+
+/*<div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image
           className="dark:invert"
@@ -99,5 +116,4 @@ export default function Home() {
         </a>
       </footer>
     </div>
-  );
-}
+  );*/
