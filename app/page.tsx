@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { getTasks, updateTaskStatus } from "../lib/airtableApi";
+import Link from "next/link";
 
 export default function Home() {
   /*Variable*/
@@ -26,18 +27,16 @@ export default function Home() {
     setMessage("");
   }
   
-  function messageParDefaut() {
-
-  }
+  
   return (
   <>
         <nav className="w-50% bg-blue-400 text-white flex justify-center  py-4 shadow">
       <ul className="flex gap-20">
         <li className="active:bg-red-500">
-          <a href="/" className="font-bold hover:underline ">Accueil</a>
+          <Link href="/" className="font-bold hover:underline">Accueil</Link>
         </li>
         <li>
-          <a href="/rappels" className="font-bold hover:underline">Mes rappels</a>
+          <Link href="/rappels" className="font-bold hover:underline">Mes rappels</Link>
         </li>
       </ul>
     </nav>
@@ -49,7 +48,7 @@ export default function Home() {
       { !showRest && (
         <>
       <h2> Coucouu {nom} 👋!</h2>
-      <p>J'espère que tu vas bien 😊</p>
+      <p>"J'espère que tu vas bien 😊"</p>
          </>
          )}
          {showRest && (
