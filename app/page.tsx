@@ -48,7 +48,7 @@ export default function Home() {
       { !showRest && (
         <>
       <h2> Coucouu {nom} 👋!</h2>
-      <p>J&apos;espère que tu vas bien 😊</p>
+      <p>J&lsquo;espère que tu vas bien 😊</p>
          </>
          )}
          {showRest && (
