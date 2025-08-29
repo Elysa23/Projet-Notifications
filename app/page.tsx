@@ -58,7 +58,7 @@ export default function Home() {
     
 
     <div className="flex gap-8 items-center flex-col sm:flex-row">
-      <button type="button" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-300 transition-sm delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 ">Ok je l'ai</button>
+      <button type="button" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-300 transition-sm delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 ">Ok je l&apos;ai</button>
       <button type="button" onClick={() => setShowModal(true)} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-300 transition delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95"> Personnaliser</button>
     </div>
     </>
