@@ -1,7 +1,7 @@
 "use client"; //intéractivité côté client
 
 import React, { useState, useEffect } from "react";
-import { getTasks, updateTaskStatus } from "../lib/airtableApi";
+/*import { getTasks, updateTaskStatus } from "../lib/airtableApi";*/
 import Link from "next/link";
 
 export default function Home() {
@@ -48,7 +48,7 @@ export default function Home() {
       { !showRest && (
         <>
       <h2> Coucouu {nom} 👋!</h2>
-      <p>"J'espère que tu vas bien 😊"</p>
+      <p>J&apos;espère que tu vas bien 😊</p>
          </>
          )}
          {showRest && (
