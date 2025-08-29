@@ -47,8 +47,8 @@ export default function Home() {
       
       { !showRest && (
         <>
-      <h2> Coucouu {nom} 👋!</h2>
-      <p>J&lsquo;espère que tu vas bien 😊</p>
+      <h2 className="animate-bounce"> Coucouu {nom} 👋!</h2>
+      <p className="animate-bounce">J&lsquo;espère que tu vas bien 😊</p>
          </>
          )}
          {showRest && (
