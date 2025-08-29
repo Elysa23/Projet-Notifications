@@ -1,119 +1,106 @@
-import Image from "next/image";
+"use client"; //intéractivité côté client
+
+import React, { useState, useEffect } from "react";
+import { getTasks, updateTaskStatus } from "../lib/airtableApi";
 
 export default function Home() {
-  const nom = "Nounouurs"
+  /*Variable*/
+
+  const nom = "Elyyy"
+  const [showModal, setShowModal] = useState(false);
+  const [message, setMessage] = useState("");
+  const [showRest, setShowRest] = useState(false);
+
+  /*Fonction JSX*/
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowRest(true);
+    }, 3000); 
+    return () => clearTimeout(timer);
+  }, []); //Effet de montage
+
+  function envoiMessagePerso() {
+    alert(`Message envoyé : ${message}`);
+    setShowModal(false);
+    setMessage("");
+  }
+  
+  function messageParDefaut() {
+
+  }
   return (
-    <div>
+  <>
+        <nav className="w-50% bg-blue-400 text-white flex justify-center  py-4 shadow">
+      <ul className="flex gap-20">
+        <li className="active:bg-red-500">
+          <a href="/" className="font-bold hover:underline ">Accueil</a>
+        </li>
+        <li>
+          <a href="/rappels" className="font-bold hover:underline">Mes rappels</a>
+        </li>
+      </ul>
+    </nav>
+    
+      
+      <main className=" bg-gradient-to-b from-blue-100 to-blue-300 min-h-screen rounded-lg shadow-lg flex items-center justify-center">
+    <div className="hover:bg-indigo-200 font-sans flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-8 sm:p-20 m-8 bg-red rounded-lg shadow-lg shadow-blue-500/50 border-2 border-blue-300 w-50% sm:w-3/4 lg:w-1/2">
+      
+      { !showRest && (
+        <>
       <h2> Coucouu {nom} 👋!</h2>
+      <p>J'espère que tu vas bien 😊</p>
+         </>
+         )}
+         {showRest && (
+        <>
       <p>Voici le rappel comme convenu ! 😉😝😄</p>
       <p> Fais-moi signe de sa bonne réception, via ces boutons 👇😉</p>
-    </div>
+    
 
-    <div>
-      <button type="button">Ok je l'ai</button>
-      <button type="button"> Personnaliser</button>
+    <div className="flex gap-8 items-center flex-col sm:flex-row">
+      <button type="button" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-300 transition-sm delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 ">Ok je l'ai</button>
+      <button type="button" onClick={() => setShowModal(true)} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-300 transition delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95"> Personnaliser</button>
     </div>
-  )
+    </>
+    )}
+    {showModal && (
+        <div className="fixed inset-0 bg-transparent flex items-center justify-center z-50">
+          <div className="bg-indigo-200 p-8 rounded shadow-lg flex flex-col gap-4">
+            <h3 className="text-lg font-bold">Un petit mot pour moi ? 👇😊</h3>
+            
+           <textarea name="messagePerso" id="messagePerso" placeholder="Ton message..."  className="border p-2 rounded"></textarea>
+            <div className="flex gap-4 justify-end">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={envoiMessagePerso}
+                className="px-4 py-2 bg-blue-500 text-white rounded"
+              >
+                Envoyer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+</main>
+
+</>
+    ) 
     
 }
 
-/*CODE NEXT JS DEFAULT*/
+/*Récupérer le message perso en le stockant dans une variable -> faire une requête POST à airtable pour l'enregistrement
+-> l'enregister dans la colonne ayant le même id que la task-> Récupérer l'id de la task dans l'url (paramètre)
+-> Définir le statut de la task en Reçu
+-> Notifier via n8n vers pushover */
 
-/*<div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );*/
+/*Ajouter un bouton pour envoyer le message par défaut (ok je l'ai) -> définir le statut de la task en Reçu
+-> Notifier via n8n vers pushover 
+Donc en cliquant sur le bouton Ok je l'ai, cela génère un envoi de message vers airtable-> définit le statut de la task en reçe
+-> Notifier via n8n vers pushover*/
