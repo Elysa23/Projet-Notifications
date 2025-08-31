@@ -58,7 +58,7 @@ export default function Home() {
   
   return (
   <>
-        <nav className="w-50% bg-blue-400 text-white flex justify-center  py-4 shadow">
+        <nav className="w-50% bg-sky-700 text-white flex justify-center  py-4 shadow">
       <ul className="flex gap-20">
         <li>
           <Link href="/" className="font-bold hover:underline active:underline-offset-8">Accueil</Link>
