@@ -70,7 +70,7 @@ export default function Home() {
     </nav>
     
       
-      <main className=" bg-gradient-to-t from-orange-300 to-sky-300 sm:from-orange-200 sm:to-sky-200 min-h-screen rounded-lg shadow-lg flex items-center justify-center text-slate-600">
+      <main className=" bg-gradient-to-t from-orange-300 to-sky-300 sm:from-orange-200 sm:to-sky-200 min-h-screen rounded-lg shadow-lg flex items-center justify-center text-white">
     <div className="hover:bg-indigo-200 font-sans flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-8 sm:p-20 m-8 bg-red rounded-lg shadow-lg shadow-blue-500/50 border-2 border-blue-300 w-50% sm:w-3/4 lg:w-1/2">
       
       { !showRest && (
