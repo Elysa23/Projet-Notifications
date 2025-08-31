@@ -3,6 +3,15 @@
 import React, { useState, useEffect } from "react";
 /*import { getTasks, updateTaskStatus } from "../lib/airtableApi";*/
 import Link from "next/link";
+import { getTasks } from "@/lib/airtableApi"; 
+
+type Task = {
+  id: string;
+  fields: {
+    Titre: string;
+    Statuts: string;
+  };
+};
 
 export default function Home() {
   /*Variable*/
@@ -11,29 +20,48 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState("");
   const [showRest, setShowRest] = useState(false);
+  const [confirmation, setConfirmation] = useState("");
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    async function fetchTasks() {
+      const data = await getTasks();
+      console.log("Données reçues d'Airtable :", data);
+      setTasks(data);
+    }
+    fetchTasks();
+  }, []); // Récupération des tâches depuis Airtable
 
   /*Fonction JSX*/
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowRest(true);
-    }, 3000); 
+    }, 3245); 
+
     return () => clearTimeout(timer);
   }, []); //Effet de montage
 
   function envoiMessagePerso() {
-    alert(`Message envoyé : ${message}`);
+    setConfirmation("Message personnalisé envoyé !");
     setShowModal(false);
     setMessage("");
+    setTimeout(()=> setConfirmation(""), 3000);
   }
   
+  function envoiMessageDefaut() {
+    setConfirmation("Accusé de réception envoyé !");
+    setShowModal(false);
+    setTimeout(() => setConfirmation(""), 3000); // Efface après 3s
+  }
+
   
   return (
   <>
         <nav className="w-50% bg-blue-400 text-white flex justify-center  py-4 shadow">
       <ul className="flex gap-20">
-        <li className="active:bg-red-500">
-          <Link href="/" className="font-bold hover:underline">Accueil</Link>
+        <li>
+          <Link href="/" className="font-bold hover:underline active:underline-offset-8">Accueil</Link>
         </li>
         <li>
           <Link href="/rappels" className="font-bold hover:underline">Mes rappels</Link>
@@ -42,7 +70,7 @@ export default function Home() {
     </nav>
     
       
-      <main className=" bg-gradient-to-t from-orange-400 to-sky-400 min-h-screen rounded-lg shadow-lg flex items-center justify-center">
+      <main className=" bg-gradient-to-t from-orange-300 to-sky-300 min-h-screen rounded-lg shadow-lg flex items-center justify-center text-gray-600">
     <div className="hover:bg-indigo-200 font-sans flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-8 sm:p-20 m-8 bg-red rounded-lg shadow-lg shadow-blue-500/50 border-2 border-blue-300 w-50% sm:w-3/4 lg:w-1/2">
       
       { !showRest && (
@@ -53,22 +81,39 @@ export default function Home() {
          )}
          {showRest && (
         <>
-      <p>Voici le rappel comme convenu ! 😉😝😄</p>
+      <p>Si tu es ici c&apos;est que tu as reçu mon rappel ! 😉😝😄</p>
+      <ul className="space-y-2">
+        {(Array.isArray(tasks) ? tasks : []).map((task: Task) => (
+          <li key={task.id} className="p-4 border rounded">
+            <p><strong>{task.fields.Titre}</strong></p>
+            <p>Statut : {task.fields.Statuts}</p>
+          </li>
+        ))}
+      </ul>
       <p> Fais-moi signe de sa bonne réception, via ces boutons 👇😉</p>
     
 
     <div className="flex gap-8 items-center flex-col sm:flex-row">
-      <button type="button" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-300 transition-sm delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 ">Ok je l&apos;ai</button>
+      <button type="button" onClick={envoiMessageDefaut} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-300 transition-sm delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 ">Ok je l&apos;ai</button>
       <button type="button" onClick={() => setShowModal(true)} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-300 transition delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95"> Personnaliser</button>
     </div>
+    
     </>
-    )}
+   ) }
+    
+    
     {showModal && (
         <div className="fixed inset-0 bg-transparent flex items-center justify-center z-50">
-          <div className="bg-indigo-200 p-8 rounded shadow-lg flex flex-col gap-4">
+          <div className="bg-indigo-200 p-8 rounded-3xl border-b-blue-500 shadow-2xl flex flex-col gap-4">
             <h3 className="text-lg font-bold">Un petit mot pour moi ? 👇😊</h3>
-            
-           <textarea name="messagePerso" id="messagePerso" placeholder="Ton message..."  className="border p-2 rounded"></textarea>
+            <textarea
+              name="messagePerso"
+              id="messagePerso"
+              placeholder="Ton message..."
+              className="border p-2 rounded"
+              value={message}
+              onChange={e => setMessage(e.target.value)}
+            ></textarea>
             <div className="flex gap-4 justify-end">
               <button
                 onClick={() => setShowModal(false)}
@@ -86,12 +131,19 @@ export default function Home() {
           </div>
         </div>
       )}
-    </div>
-</main>
+      {confirmation && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+          <div className="bg-green-100 text-green-700 font-bold px-6 py-4 rounded shadow-lg animate-fade-in">
+        {confirmation}
+          </div>
+        </div>
+      )}
+    </div> 
+  </main>
 
 </>
-    ) 
     
+    );
 }
 
 /*Récupérer le message perso en le stockant dans une variable -> faire une requête POST à airtable pour l'enregistrement
