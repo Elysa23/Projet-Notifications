@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 /*import { getTasks, updateTaskStatus } from "../lib/airtableApi";*/
 import Link from "next/link";
-import { getTasks } from "@/lib/airtableApi"; 
+// L'API est maintenant appelée via fetch
+ 
 
 type Task = {
   id: string;
@@ -23,14 +24,15 @@ export default function Home() {
   const [confirmation, setConfirmation] = useState("");
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  useEffect(() => {
-    async function fetchTasks() {
-      const data = await getTasks();
-      console.log("Données reçues d'Airtable :", data);
-      setTasks(data);
-    }
-    fetchTasks();
-  }, []); // Récupération des tâches depuis Airtable
+  // Commenté car getTasks n'est pas encore implémenté
+  // useEffect(() => {
+  //   async function fetchTasks() {
+  //     const data = await getTasks();
+  //     console.log("Données reçues d'Airtable :", data);
+  //     setTasks(data);
+  //   }
+  //   fetchTasks();
+  // }, []); // Récupération des tâches depuis Airtable
 
   /*Fonction JSX*/
 
@@ -49,10 +51,25 @@ export default function Home() {
     setTimeout(()=> setConfirmation(""), 3000);
   }
   
-  function envoiMessageDefaut() {
-    setConfirmation("Accusé de réception envoyé !");
+  async function envoiMessageDefaut() {
+    try {
+      const res = await fetch('/api/add-ar', {
+        method: 'POST',
+      });
+      const result = await res.json();
+      
+      if (result.success) {
+        setConfirmation(`Accusé de réception envoyé ! ${result.message}`);
+      } else {
+        setConfirmation("Erreur lors de l'envoi de l'accusé de réception");
+      }
+    } catch (error) {
+      console.error("Erreur:", error);
+      setConfirmation("Erreur lors de l'envoi de l'accusé de réception");
+    }
+    
     setShowModal(false);
-    setTimeout(() => setConfirmation(""), 3000); // Efface après 3s
+    setTimeout(() => setConfirmation(""), 5000); // Efface après 5s
   }
 
   
@@ -81,21 +98,16 @@ export default function Home() {
          )}
          {showRest && (
         <>
-      <p>Si tu es ici c&apos;est que tu as reçu mon rappel ! 😉😝😄</p>
-      <ul className="space-y-2">
-        {(Array.isArray(tasks) ? tasks : []).map((task: Task) => (
-          <li key={task.id} className="p-4 border rounded">
-            <p><strong>{task.fields.Titre}</strong></p>
-            <p>Statut : {task.fields.Statuts}</p>
-          </li>
-        ))}
-      </ul>
+        <div className="flex flex-col gap-4 items-center justify-center text-center">
+      <p>Si tu es ici, c&apos;est que tu as reçu mon rappel ! 😉😝😄</p>
+      
       <p> Fais-moi signe de sa bonne réception, via ces boutons 👇😉</p>
-    
+        
 
     <div className="flex gap-8 items-center flex-col sm:flex-row">
-      <button type="button" onClick={envoiMessageDefaut} className="px-4 py-2 bg-blue-600 text-amber-100 rounded-lg hover:bg-blue-300 transition-sm delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 ">Ok je l&apos;ai</button>
-      <button type="button" onClick={() => setShowModal(true)} className="px-4 py-2 bg-blue-600 text-amber-100 rounded-lg hover:bg-blue-300 transition delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95"> Personnaliser</button>
+      <button type="button" onClick={envoiMessageDefaut} className="px-4 py-2 bg-blue-600 text-amber-100 rounded-lg hover:bg-blue-300 transition-sm delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 ">Super, merci !</button>
+      <button type="button" onClick={() => setShowModal(true)} className="px-4 py-2 bg-blue-600 text-amber-100 rounded-lg hover:bg-blue-300 transition delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95"> Laisser un mot</button>
+    </div>
     </div>
     
     </>
@@ -105,7 +117,7 @@ export default function Home() {
     {showModal && (
         <div className="fixed inset-0 bg-transparent flex items-center justify-center z-50">
           <div className="bg-indigo-200 p-8 rounded-3xl border-b-blue-500 shadow-2xl flex flex-col gap-4">
-            <h3 className="text-lg font-bold">Un petit mot pour moi ? 👇😊</h3>
+            <h3 className="text-lg font-medium">Un petit mot pour moi ? 👇😊</h3>
             <textarea
               name="messagePerso"
               id="messagePerso"
@@ -117,13 +129,13 @@ export default function Home() {
             <div className="flex gap-4 justify-end">
               <button
                 onClick={() => setShowModal(false)}
-                className="px-4 py-2 bg-gray-300 rounded"
+                className="px-4 py-2 bg-gray-300 rounded-lg"
               >
                 Annuler
               </button>
               <button
                 onClick={envoiMessagePerso}
-                className="px-4 py-2 bg-sky-600 text-white rounded"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg"
               >
                 Envoyer
               </button>
