@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 /*import { getTasks, updateTaskStatus } from "../lib/airtableApi";*/
 import Link from "next/link";
+// import { addAr } from "@/lib/airtableApi"; // Plus nécessaire, on utilise l'API route
 // L'API est maintenant appelée via fetch
  
 
@@ -53,23 +54,29 @@ export default function Home() {
   
   async function envoiMessageDefaut() {
     try {
-      const res = await fetch('/api/add-ar', {
+      // Faire une requête POST vers l'API route
+      const res = await fetch('/api/ack', { 
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
       });
+      
+      // Récupérer la réponse JSON
       const result = await res.json();
       
+      // Vérifier si c'est un succès
       if (result.success) {
-        setConfirmation(`Accusé de réception envoyé ! ${result.message}`);
+        setConfirmation(`AR envoyé ! ${result.message}`);
       } else {
-        setConfirmation("Erreur lors de l'envoi de l'accusé de réception");
+        setConfirmation(`Erreur : ${result.error}`);
       }
     } catch (error) {
-      console.error("Erreur:", error);
-      setConfirmation("Erreur lors de l'envoi de l'accusé de réception");
+      setConfirmation("Erreur de connexion");
     }
     
     setShowModal(false);
-    setTimeout(() => setConfirmation(""), 5000); // Efface après 5s
+    setTimeout(() => setConfirmation(""), 3000);
   }
 
   
