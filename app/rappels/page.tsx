@@ -19,7 +19,7 @@ export default function RappelsPage() {
     // Désactivé: l'API interne a été supprimée
     setLoading(false);
     setTasks([]);
-    setError("Chargement désactivé (API interne supprimée)");
+    setError("Chargement désactivé (Développement en cours)");
   }, []);
 
   return (
@@ -51,7 +51,7 @@ export default function RappelsPage() {
               href="/" 
               className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
             >
-              ← Retour à l'accueil
+              ← Retour à l&apos;accueil
             </Link>
           </div>
         </div>

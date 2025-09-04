@@ -53,21 +53,24 @@ export default function Home() {
   }
   
   async function envoiMessageDefaut() {
+    setShowModal(false);
+    
     try {
-      // Faire une requête POST vers l'API route
-      const res = await fetch('/api/ack', { 
+      const res = await fetch('/api/add-ar', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         }
       });
       
-      // Récupérer la réponse JSON
-      const result = await res.json();
+      if (!res.ok) {
+        throw new Error(`Erreur HTTP: ${res.status}`);
+      }
       
-      // Vérifier si c'est un succès
+      const result = await res.json();
       if (result.success) {
-        setConfirmation(`AR envoyé ! ${result.message}`);
+        setConfirmation(`AR envoyé !`);
+        console.log(result.message);
       } else {
         setConfirmation(`Erreur : ${result.error}`);
       }
@@ -75,7 +78,6 @@ export default function Home() {
       setConfirmation("Erreur de connexion");
     }
     
-    setShowModal(false);
     setTimeout(() => setConfirmation(""), 3000);
   }
 
@@ -107,8 +109,8 @@ export default function Home() {
         <>
         <div className="flex flex-col gap-4 items-center justify-center text-center">
       <p>Si tu es ici, c&apos;est que tu as reçu mon rappel ! 😉😝😄</p>
-      
-      <p> Fais-moi signe de sa bonne réception, via ces boutons 👇😉</p>
+      <p></p>
+      <p > Fais-moi signe de sa bonne réception, via ces boutons 👇😉</p>
         
 
     <div className="flex gap-8 items-center flex-col sm:flex-row">

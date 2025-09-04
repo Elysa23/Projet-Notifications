@@ -1,15 +1,15 @@
-import { addAr } from "../../../lib/airtableApi";
+import {updateTaskWithAr} from "../../../lib/airtableApi";
 
 export async function POST() {
   try {
     // Appeler votre fonction (côté serveur, accès aux variables d'env)
-    const result = await addAr();
+    const result = await updateTaskWithAr();
     
     // Retourner une réponse JSON au client
     return Response.json({ 
       success: true, 
       data: result,
-      message: `${result.length} tâches récupérées`
+      message: `${result.length} tâches mises à jour avec AR`
     });
   } catch (error) {
     // En cas d'erreur, retourner un message d'erreur
@@ -19,5 +19,3 @@ export async function POST() {
     }, { status: 500 });
   }
 }
-
-
