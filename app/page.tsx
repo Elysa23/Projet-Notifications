@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from "react";
 /*import { getTasks, updateTaskStatus } from "../lib/airtableApi";*/
 import Link from "next/link";
-// import { addAr } from "@/lib/airtableApi"; // Plus nécessaire, on utilise l'API route
-// L'API est maintenant appelée via fetch
+
  
 
 type Task = {
@@ -25,15 +24,8 @@ export default function Home() {
   const [confirmation, setConfirmation] = useState("");
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  // Commenté car getTasks n'est pas encore implémenté
-  // useEffect(() => {
-  //   async function fetchTasks() {
-  //     const data = await getTasks();
-  //     console.log("Données reçues d'Airtable :", data);
-  //     setTasks(data);
-  //   }
-  //   fetchTasks();
-  // }, []); // Récupération des tâches depuis Airtable
+  
+
 
   /*Fonction JSX*/
 
@@ -44,6 +36,7 @@ export default function Home() {
 
     return () => clearTimeout(timer);
   }, []); //Effet de montage
+
 
   function envoiMessagePerso() {
     setConfirmation("Message personnalisé envoyé !");
@@ -84,7 +77,7 @@ export default function Home() {
   
   return (
   <>
-        <nav className="w-50% bg-blue-800 text-white flex justify-center py-4 shadow">
+        <nav className="w-50% bg-sky-600 text-white flex justify-center py-4 shadow">
       <ul className="flex gap-20">
         <li>
           <Link href="/" className="font-bold hover:underline active:underline-offset-8">Accueil</Link>
@@ -96,7 +89,7 @@ export default function Home() {
     </nav>
     
       
-      <main className=" bg-gradient-to-t from-indigo-400 to-blue-200  min-h-screen rounded-lg shadow-lg flex items-center justify-center text-slate-900">
+      <main className=" bg-[linear-gradient(102deg,rgba(163,213,255,1)_11.3%,rgba(6,153,153,1)_86.7%)]  min-h-screen rounded-lg shadow-lg flex items-center justify-center text-slate-900">
     <div className="hover:bg-indigo-200 font-sans flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-8 sm:p-20 m-8 bg-red rounded-lg shadow-lg shadow-blue-500/50 border-2 border-blue-300 w-50% sm:w-3/4 lg:w-1/2">
       
       { !showRest && (
@@ -114,8 +107,8 @@ export default function Home() {
         
 
     <div className="flex gap-8 items-center flex-col sm:flex-row">
-      <button type="button" onClick={envoiMessageDefaut} className="px-4 py-2 bg-blue-600 text-amber-100 rounded-lg hover:bg-blue-300 transition-sm delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 ">Super, merci !</button>
-      <button type="button" onClick={() => setShowModal(true)} className="px-4 py-2 bg-blue-600 text-amber-100 rounded-lg hover:bg-blue-300 transition delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95"> Laisser un mot</button>
+      <button type="button" onClick={envoiMessageDefaut} className="px-4 py-2 bg-blue-500 text-amber-200 rounded-lg hover:bg-blue-300 transition-sm delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 ">Super, merci !</button>
+      <button type="button" onClick={() => setShowModal(true)} className="px-4 py-2 bg-blue-500 text-amber-200 rounded-lg hover:bg-blue-300 transition delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95"> Laisser un mot</button>
     </div>
     </div>
     
