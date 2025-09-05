@@ -26,11 +26,21 @@ type AirtableListResponse = { records: AirtableRecord[] };
 export async function addAr(): Promise<AirtableRecord[]> {
   try {
     // Vérifier les variables d'environnement
+    console.log('Variables d\'environnement:', {
+      hasBaseId: !!process.env.AIRTABLE_BASE_ID,
+      hasTableName: !!process.env.AIRTABLE_TABLE_NAME,
+      hasApiKey: !!process.env.AIRTABLE_API_KEY,
+      baseId: process.env.AIRTABLE_BASE_ID,
+      tableName: process.env.AIRTABLE_TABLE_NAME
+    });
+
     if (!process.env.AIRTABLE_BASE_ID || !process.env.AIRTABLE_TABLE_NAME || !process.env.AIRTABLE_API_KEY) {
       throw new Error("Variables d'environnement manquantes");
     }
 
     const urlToRecup = `${AIRTABLE_API_URL}?filterByFormula=${encodeURIComponent('Statuts="Envoyée"')}`;
+    console.log('URL de récupération:', urlToRecup);
+    
     const res = await fetch(urlToRecup, {
       headers: {
         Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
@@ -38,11 +48,23 @@ export async function addAr(): Promise<AirtableRecord[]> {
       cache: "no-store",
     });
 
+    console.log('Réponse Airtable:', {
+      status: res.status,
+      statusText: res.statusText,
+      ok: res.ok
+    });
+
     if (!res.ok) {
-      throw new Error(`Erreur Airtable: ${res.status} ${res.statusText}`);
+      const errorText = await res.text();
+      console.error('Erreur détaillée Airtable:', errorText);
+      throw new Error(`Erreur Airtable: ${res.status} ${res.statusText} - ${errorText}`);
     }
 
     const data: AirtableListResponse = await res.json();
+    console.log('Données récupérées:', {
+      recordCount: data.records.length,
+      records: data.records.map(r => ({ id: r.id, statuts: r.fields.Statuts }))
+    });
     return data.records;
   } catch (error) {
     console.error('Erreur lors de l\'ajout de l\'AR dans Airtable:', error);
