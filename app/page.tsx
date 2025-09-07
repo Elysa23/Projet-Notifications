@@ -17,7 +17,7 @@ type Task = {
 export default function Home() {
   /*Variable*/
 
-  const nom = "Elyyy"
+  const nom = "Lucaaas"
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState("");
   const [showRest, setShowRest] = useState(false);
@@ -109,8 +109,8 @@ export default function Home() {
 
     <div className="flex gap-8 items-center flex-col sm:flex-row">
       <button type="button" onClick={envoiMessageDefaut} className="px-4 py-2 bg-blue-600
- text-amber-200 rounded-lg hover:bg-blue-300 transition-sm delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 ">Super, merci !</button>
-      <button type="button" onClick={() => setShowModal(true)} className="px-4 py-2 bg-blue-600 text-amber-200 rounded-lg hover:bg-blue-300 transition delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95"> Laisser un mot</button>
+ text-amber-200 rounded-lg transition-sm delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 ">Super, merci !</button>
+      <button type="button" onClick={() => setShowModal(true)} className="px-4 py-2 bg-blue-600 text-amber-200 rounded-lg  transition delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 active:shadow-inner"> Laisser un mot</button>
     </div>
     </div>
     
@@ -125,7 +125,7 @@ export default function Home() {
             <textarea
               name="messagePerso"
               id="messagePerso"
-              placeholder="Ton message..."
+              placeholder="Utilise l'autre bouton, mbola tsy mandeha ito 😝😅 " // A modifier plus tard quand le bouton sera fonctionnel
               className="border p-2 rounded"
               value={message}
               onChange={e => setMessage(e.target.value)}
