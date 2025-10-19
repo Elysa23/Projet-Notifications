@@ -108,7 +108,7 @@ export default function Home() {
 
                 <div className="flex gap-8 items-center flex-col sm:flex-row">
                   <button type="button" onClick={envoiMessageDefaut} className="px-4 py-2 bg-blue-600
- text-amber-200 rounded-lg transition-sm delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 ">Super, merci !</button>
+ text-amber-200 rounded-lg transition-sm delay-150 duration-400 ease-in-out hover:translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 ">Super, merci !</button>
                   <button type="button" onClick={() => setShowModal(true)} className="px-4 py-2 bg-blue-600 text-amber-200 rounded-lg  transition delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 active:shadow-inner"> Laisser un mot</button>
                 </div>
               </div>

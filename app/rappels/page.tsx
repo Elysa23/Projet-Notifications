@@ -93,10 +93,10 @@ export default function RappelsPage() {
         </ul>
       </nav>
 
-      <main className="bg-[linear-gradient(105deg,rgba(163,213,255,1)_11.3%,rgba(6,153,153,1)_86.7%)] min-h-screen rounded-lg shadow-lg flex items-center justify-center text-slate-900">
+      <main className="bg-[linear-gradient(105deg,rgba(163,213,255,1)_11.3%,rgba(6,153,153,1)_86.7%)] contrast-127 min-h-screen rounded-lg shadow-lg flex items-center justify-center text-slate-800">
         <div className="hover:bg-cyan-500 font-sans flex flex-col items-center justify-center min-h-screen p-4 pb-20 gap-8 sm:p-20 m-8 rounded-lg shadow-lg shadow-blue-500/50 border-2 border-blue-300 w-50% sm:w-3/4 lg:w-1/2">
 
-          <h1 className="text-3xl font-bold text-center mb-8 mt-2">📋 Mes Rappels</h1>
+          <h1 className="text-3xl font-semibold text-center mb-8 mt-2">📋 Mes Rappels</h1>
 
           {error && (
             <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded">
@@ -110,12 +110,12 @@ export default function RappelsPage() {
               {!loading && tasks.length === 0 && !error && <p>Aucune tâche reçue.</p>}
               {tasks.map((task) => (
                 <>
-                  <div className="flex flex-row justify-between items-center gap-6 border rounded p-2 hover:border-cyan-300 hover:shadow-xl sm:active:border-cyan-300" key={task.id}>
+                  <div className="flex flex-row justify-between items-center gap-6 border-emerald-600 border-2 rounded-3xl p-2 hover:border-cyan-300 hover:shadow-xl sm:active:border-cyan-300" key={task.id}>
                     <li key={task.id} className="p-4 mb-2 max-w-fit">
                       <p className="font-bold">{task.titre}</p>
                     </li>
 
-                    <button onClick={() => completeTask(task.id)} className="bg-green-600 px-4 py-1 h-fit rounded-xl" > Terminer</button>
+                    <button onClick={() => completeTask(task.id)} className="bg-emerald-600 px-4 py-2 h-fit rounded-2xl text-amber-50 font-normal hover:scale-110 hover:bg-emerald-400" > Terminer</button>
                   </div >
                 </>
               ))}
@@ -123,7 +123,7 @@ export default function RappelsPage() {
           </div>
 
           <div className="mt-8">
-            <button onClick={fetchTasks} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-color"> Rafraîchir</button>
+            <button onClick={fetchTasks} className="bg-blue-700 hover:bg-blue-600 hover:scale-110  text-amber-50 font-normal py-2 px-4 rounded-4xl transition-color"> Rafraîchir</button>
           </div>
         </div>
       </main >
