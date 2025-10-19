@@ -164,3 +164,41 @@ export async function getReceivedTasks() {
   }
 
 }
+
+// 2. Mise à jour de la tâche pour changer le statut à "Terminée"
+
+export async function markTaskAsCompleted(taskId: string) {
+  try {
+    if (!process.env.AIRTABLE_API_KEY || !process.env.AIRTABLE_BASE_ID || !process.env.AIRTABLE_TABLE_NAME) {
+      throw new Error("Variables d'environnement manquantes");
+    }
+
+    const updateUrl = `${AIRTABLE_API_URL}/${taskId}`;
+    const updateData = {
+      fields: {
+        id: taskId,
+        Statuts: "Terminée"
+      }
+    }
+
+    const res = await fetch(updateUrl, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updateData)
+    });
+
+    if (res!.ok) {
+      const errorText = await res.text();
+      console.error('Erreur détaillée Airtable:', errorText);
+      throw new Error(`Erreur Airtable: ${res.status} ${res.statusText} - ${errorText}`);
+
+    }
+  }
+  catch (error) {
+    console.error("Erreur lors de la mise à jour de la tâche en Terminée", error);
+  }
+}
+
