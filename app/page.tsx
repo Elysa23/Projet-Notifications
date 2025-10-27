@@ -37,12 +37,37 @@ export default function Home() {
   }, []); //Effet de montage
 
 
-  function envoiMessagePerso() {
+  async function envoiMessagePerso() {
 
-    setConfirmation("Message personnalisé envoyé !");
-    setShowModal(false);
-    setMessage("");
-    setTimeout(() => setConfirmation(""), 3000);
+    try {
+      const res = await fetch('/api/add-ar/custom', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message })
+
+      });
+
+      const json = await res.json();
+      if (!res.ok) {
+        console.error('Erreur API /add-ar/custom:', json);
+        setConfirmation(json?.error || `Erreur serveur ${res.status}`);
+      }
+      else if (!json || json.success === false) {
+        setConfirmation(json?.error || "Échec de l'envoi");
+      } else {
+        setConfirmation("Message personnalisé envoyé !");
+        setMessage("");
+        setShowModal(false);
+      }
+    } catch (error) {
+      console.error('Erreur de connexion:', error);
+      setConfirmation("Erreur de connexion");
+    } finally {
+      setTimeout(() => setConfirmation(""), 3000);
+    }
+
   }
 
   async function envoiMessageDefaut() {
@@ -138,7 +163,7 @@ export default function Home() {
                     Annuler
                   </button>
                   <button
-                    onClick={envoiMessagePerso}
+                    onClick={() => envoiMessagePerso()}
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg"
                   >
                     Envoyer
@@ -155,7 +180,7 @@ export default function Home() {
             </div>
           )}
         </div>
-      </main>
+      </main >
 
     </>
 

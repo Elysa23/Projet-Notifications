@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { markTaskAsCompleted } from "@/lib/airtableApi";
 
 
 //Structure de données d'une tâche
@@ -25,9 +24,10 @@ export default function RappelsPage() {
   }>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [confirmation, setConfirmation] = useState("");
 
   const fetchTasks = async () => {
-
+    setLoading(true);
     try {
       const res = await fetch('/api/received-tasks');
       if (!res.ok) {
@@ -44,6 +44,7 @@ export default function RappelsPage() {
           //  hasAR: !!task.fields.AR,
           // statut: task.fields.Statuts ?? "",
         })));
+        console.log('Tâches reçues:', data.data);
       } else {
         setTasks([]);
         setError("Aucune tâche reçue.");
@@ -61,21 +62,37 @@ export default function RappelsPage() {
 
   }, []);
 
-  const completeTask = async (id: string) => {
+  const completeTask = async (taskId: string) => {
     try {
       const res = await fetch('/api/completed-tasks', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ id })
+        body: JSON.stringify({ taskId })
       });
-      if (res!.ok) {
-        throw new Error(`Erreur HTTP: ${res.status}`);
+
+      const json = await res.json();
+      if (!res.ok) {
+        console.error('Erreur serveur /api/completed-tasks:', json);
+        throw new Error(json?.error || `Erreur HTTP: ${res.status}`);
       }
-    }
-    catch (error) {
+
+      console.log('Tâche terminée avec succès:', json);
+      // Rafraîchir la liste des tâches après la mise à jour
+      await fetchTasks();
+
+      if (completeTask) {
+        //alert(`Tâche terminée avec succès !`);
+        setConfirmation("Tâche marquée comme terminée avec succès !");
+        setTimeout(() => setConfirmation(), 4000);
+      }
+      else {
+        setError("Erreur lors de la mise à jour de la tâche.");
+      }
+    } catch (error) {
       console.error('Erreur lors de la mise à jour de la tâche:', error);
+
     }
   };
 
@@ -109,21 +126,31 @@ export default function RappelsPage() {
               {loading && <p className="animate-pulse">Chargement des tâches...</p>}
               {!loading && tasks.length === 0 && !error && <p>Aucune tâche reçue.</p>}
               {tasks.map((task) => (
-                <>
-                  <div className="flex flex-row justify-between items-center gap-6 border-emerald-600 border-2 rounded-3xl p-2 hover:border-cyan-300 hover:shadow-xl sm:active:border-cyan-300" key={task.id}>
-                    <li key={task.id} className="p-4 mb-2 max-w-fit">
-                      <p className="font-bold">{task.titre}</p>
-                    </li>
 
-                    <button onClick={() => completeTask(task.id)} className="bg-emerald-600 px-4 py-2 h-fit rounded-2xl text-amber-50 font-normal hover:scale-110 hover:bg-emerald-400" > Terminer</button>
-                  </div >
-                </>
+                <div className="flex flex-row justify-between items-center gap-6 border-emerald-600 border-2 rounded-3xl p-2 hover:border-cyan-300 hover:shadow-xl sm:active:border-cyan-300" key={task.id}>
+                  <li key={task.id} className="p-4 mb-2 max-w-fit">
+                    <p className="font-bold">{task.titre}</p>
+                  </li>
+
+                  <button onClick={() => completeTask(task.id)} className="bg-emerald-600 px-4 py-2 h-fit rounded-2xl text-amber-50 font-normal hover:scale-110 hover:bg-emerald-400" > Terminer</button>
+                  {confirmation && (
+
+                    <div className="fixed top-5 right-5 flex items-center justify-center x-100 y-100 z-200 pointer-events-none">
+                      <div className="bg-green-200 text-green-700 font-bold px-6 py-4 rounded-xl shadow-lg animate-fade-in">
+                        {confirmation}
+                      </div>
+                    </div>
+                  )}
+                </div >
+
+
+
               ))}
             </ul>
           </div>
 
-          <div className="mt-8">
-            <button onClick={fetchTasks} className="bg-blue-700 hover:bg-blue-600 hover:scale-110  text-amber-50 font-normal py-2 px-4 rounded-4xl transition-color"> Rafraîchir</button>
+          <div className="mt-5">
+            <button onClick={fetchTasks} className="bg-blue-700 shadow-md shadow-blue-500 border-blue-300 border hover:bg-blue-600 hover:scale-110  text-amber-50 font-normal py-2 px-4 rounded-4xl transition-color"> Rafraîchir</button>
           </div>
         </div>
       </main >

@@ -1,14 +1,18 @@
 import { markTaskAsCompleted } from "@/lib/airtableApi";
+import { count } from "console";
 
-export async function POST() {
+export async function POST(request: Request) {
     try {
-        const result = await markTaskAsCompleted();
+
+        const body = await request.json();
+        const taskId = body.taskId;
+        const result = await markTaskAsCompleted(taskId);
 
         return Response.json(
             {
                 success: true,
                 data: result,
-                message: `${result.length} tâches mises à jour`
+                message: `${count} tâches mises à jour`
             }
         );
     }
