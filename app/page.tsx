@@ -150,7 +150,7 @@ export default function Home() {
                 <textarea
                   name="messagePerso"
                   id="messagePerso"
-                  placeholder="Utilise l'autre bouton, mbola tsy mandeha ito 😝😅 " // A modifier plus tard quand le bouton sera fonctionnel
+                  placeholder="Ton message "
                   className="border p-2 rounded"
                   value={message}
                   onChange={e => setMessage(e.target.value)}

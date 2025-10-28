@@ -141,53 +141,63 @@ export async function updateTaskWithAr() {
 // 3. Mise à jour de chaque tâche pour ajouter l'AR personnalisé et changer le statut
 
 export async function updateTaskWithArPerso(message: string) {
-  if (!process.env.AIRTABLE_API_KEY || !process.env.AIRTABLE_BASE_ID || !process.env.AIRTABLE_TABLE_NAME) {
-    throw new Error("Variables d'environnement manquantes");
-  }
 
-  if (!message || typeof message !== 'string') {
-    throw new Error("message invalide");
-  }
+  try {
 
-  const dataToUpdate = await addAr();
-  console.log('Résultats AddAR ', dataToUpdate);
-  if (!dataToUpdate || dataToUpdate.length === 0) {
-    throw new Error("Aucune tâche trouvée avec le statut 'Envoyée'");
-  }
 
-  const dataToUse = dataToUpdate.map(async (record) => {
-    const url = `${AIRTABLE_API_URL}/${record.id}`,
-    const updateData = {
-      fields: {
-        AR: message,
-        Statuts: "Reçue",
-      }
+    if (!process.env.AIRTABLE_API_KEY || !process.env.AIRTABLE_BASE_ID || !process.env.AIRTABLE_TABLE_NAME) {
+      throw new Error("Variables d'environnement manquantes");
     }
-  });
+
+    if (!message || typeof message !== 'string') {
+      throw new Error("message invalide");
+    }
+
+    const dataToUpdate = await addAr();
+    console.log('Résultats AddAR ', dataToUpdate);
+    if (!dataToUpdate || dataToUpdate.length === 0) {
+      throw new Error("Aucune tâche trouvée avec le statut 'Envoyée'");
+    }
+
+    const results = await Promise.all(
+      dataToUpdate.map(async (record: AirtableRecord) => {
+        const url = `${AIRTABLE_API_URL}/${record.id}`;
+        const updateData = {
+          fields: {
+            AR: message,
+            Statuts: "Reçue",
+          },
+        };
+
+        const res = await fetch(url, {
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify(updateData)
+        });
+        console.log(updateData); // Pour vérifier le contenu envoyé
 
 
-  const res = await fetch(url, {
-    method: 'PATCH',
-    headers: {
-      Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
-      'Content-type': 'application/json'
-    },
-    body: JSON.stringify(updateData)
-  });
-  console.log(updateData); // Pour vérifier le contenu envoyé
-
-  if (!res.ok) {
-    const errorText = await res.text();
-    console.error('Erreur détaillée Airtable:', errorText);
-    throw new Error(`Erreur Airtable: ${res.status} ${res.statusText} - ${errorText}`);
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error('Erreur détaillée Airtable:', errorText);
+          throw new Error(`Erreur Airtable: ${res.status} ${res.statusText} - ${errorText}`);
+        }
+        const data = await res.json();
+        console.log('Tâche mise à jour avec AR personnalisé:', data)
+        return data;
+      }
+      )
+    );
+    return results;
   }
-  const data = await res.json();
-  console.log('Tâche mise à jour avec AR personnalisé:', data)
-  return data;
-
+  catch (error) {
+    console.error("Erreur lors de la mise à jour des tâches avec AR personnalisé:", error);
+    return [];
+  }
 }
-
-
 
 
 
