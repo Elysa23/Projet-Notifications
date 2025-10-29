@@ -18,17 +18,8 @@ export async function POST() {
       error: error instanceof Error ? error.message : 'Erreur inconnue'
     }, { status: 500 });
   }
+
+
 }
 
 
-export async function POST() {
-  try {
-    const result = await addAr();
-
-    return Response.json({
-      success: true,
-      data: result,
-      message: `${result.length} tâches récupérées`
-    });
-  }
-}
