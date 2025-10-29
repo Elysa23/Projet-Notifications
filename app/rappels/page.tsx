@@ -82,10 +82,10 @@ export default function RappelsPage() {
       // Rafraîchir la liste des tâches après la mise à jour
       await fetchTasks();
 
-      if (completeTask) {
+      if (res) {
         //alert(`Tâche terminée avec succès !`);
         setConfirmation("Tâche marquée comme terminée avec succès !");
-        setTimeout(() => setConfirmation(), 4000);
+        setTimeout(() => setConfirmation(""), 4000);
       }
       else {
         setError("Erreur lors de la mise à jour de la tâche.");
