@@ -57,7 +57,7 @@ export default function Home() {
       else if (!json || json.success === false) {
         setConfirmation(json?.error || "Échec de l'envoi");
       } else {
-        setConfirmation("Message personnalisé envoyé !");
+        setConfirmation("Message envoyé !");
         setMessage("");
         setShowModal(false);
       }
@@ -102,7 +102,7 @@ export default function Home() {
 
   return (
     <>
-      <nav className="w-50% bg-sky-600
+      <nav className="w-50% bg-blue-800
  contrast-110 text-white flex justify-center py-4 shadow">
         <ul className="flex gap-20">
           <li>
@@ -116,7 +116,7 @@ export default function Home() {
 
 
       <main className=" bg-[linear-gradient(105deg,rgba(163,213,255,1)_11.3%,rgba(6,153,153,1)_86.7%)] contrast-127 min-h-screen rounded-lg shadow-lg flex items-center justify-center text-slate-900">
-        <div className="hover:bg-cyan-500 font-sans flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-8 sm:p-20 m-8 bg-red rounded-lg shadow-lg shadow-blue-500/50 border-2 border-blue-300 w-50% sm:w-3/4 lg:w-1/2">
+        <div className="hover:bg-cyan-500 font-sans flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-8 sm:p-20 m-8 bg-red rounded-lg shadow-lg shadow-blue-500/50 border-2 border-blue-300 sm:w-3/4 lg:w-1/2">
 
           {!showRest && (
             <>
@@ -132,7 +132,7 @@ export default function Home() {
                 <p > Fais-moi signe de sa bonne réception, via ces boutons 👇😉</p>
 
 
-                <div className="flex gap-8 items-center flex-col sm:flex-row">
+                <div className="flex gap-8 items-center flex-col sm:flex-row mt-2">
                   <button type="button" onClick={envoiMessageDefaut} className="px-4 py-2 bg-blue-600
  text-amber-200 rounded-lg transition-sm delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 ">Super, merci !</button>
                   <button type="button" onClick={() => setShowModal(true)} className="px-4 py-2 bg-blue-600 text-amber-200 rounded-lg  transition delay-150 duration-400 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-indigo-300 active:scale-95 active:shadow-inner"> Laisser un mot</button>
