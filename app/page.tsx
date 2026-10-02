@@ -115,7 +115,7 @@ export default function Home() {
       </nav>
 
 
-      <main className=" bg-[linear-gradient(105deg,rgba(6,153,153,1)_80%, rgba(163,213,255,1)_11.3%,rgba(6,153,153,1)_80%)] contrast-127 min-h-screen rounded-lg shadow-lg flex items-center justify-center text-slate-900">
+      <main className=" bg-[linear-gradient(105deg,rgba(163,213,255,1)_11.3%,rgba(6,153,153,1)_80%)] contrast-127 min-h-screen rounded-lg shadow-lg flex items-center justify-center text-slate-900">
         <div className="hover:bg-cyan-500 font-sans flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-8 sm:p-20 m-8 bg-red rounded-lg shadow-lg shadow-blue-500/50 border-2 border-blue-300 sm:w-3/4 lg:w-1/2">
 
           {!showRest && (
