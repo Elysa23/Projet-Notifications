@@ -113,7 +113,7 @@ export default function RappelsPage() {
       <main className="bg-[linear-gradient(105deg,rgba(163,213,255,1)_11.3%,rgba(6,153,153,1)_86.7%)] contrast-127 min-h-screen rounded-lg shadow-lg flex items-center justify-center flex-col text-slate-800">
 
         <div className="flex flex-col items-center justify-center mt-8">
-          <h1 className="text-3xl font-semibold text-center mb-8 mt-2 sm:text-2xl border-2 border-blue-300 rounded-lg shadow-blue-500/50 shadow-lg p-2 hover:bg-cyan-500 "> Mes Rappels</h1>
+          <h1 className="text-3xl font-semibold text-center mb-8 mt-2 sm:text-2xl  rounded-lg shadow-blue-500/50 shadow-lg p-2 hover:bg-cyan-500 "> Mes Rappels</h1>
         </div>
 
         <div className="hover:bg-cyan-500 font-sans flex flex-col items-center min-h-screen pb-20 gap-8 sm:p-20 m-8 rounded-lg shadow-lg shadow-blue-500/50 border-2 border-blue-300  sm:max-w-[100%] lg:w-1/2">
@@ -131,7 +131,7 @@ export default function RappelsPage() {
               {!loading && tasks.length === 0 && !error && <p>Aucune tâche reçue.</p>}
               {tasks.map((task) => (
 
-                <div className="flex flex-row justify-between items-center gap-6 border-emerald-600 border-1 rounded-3xl p-2 hover:border-cyan-300 hover:shadow-xl sm:active:border-cyan-300" key={task.id}>
+                <div className="flex flex-row justify-between items-center gap-6 border border-[oklch(42.4%_0.199_265.638/0.3)] border-1 rounded-3xl p-2 hover:border-cyan-300 hover:shadow-xl sm:active:border-cyan-300" key={task.id}>
                   <li key={task.id} className="p-4 mb-2 max-w-fit">
                     <p className="font-bold">{task.titre}</p>
                   </li>
